@@ -10,9 +10,21 @@
     "tagline": "Advanced aerospace systems. Battlefield technologies. Private military contracting. The future of defense is forged here.",
     "classification": "// Dominance Is Engineered",
     "buttons": [
-      { "text": "Enlist Now", "url": "https://robertsspaceindustries.com/en/orgs/GBRS/members", "style": "primary" },
-      { "text": "Join Discord", "url": "https://discord.gg/nRgfnkgJ", "style": "default" },
-      { "text": "YouTube", "url": "#", "style": "default" }
+      {
+        "text": "Enlist Now",
+        "url": "https://robertsspaceindustries.com/en/orgs/GBRS/members",
+        "style": "primary"
+      },
+      {
+        "text": "Join Discord",
+        "url": "https://discord.gg/nRgfnkgJ",
+        "style": "default"
+      },
+      {
+        "text": "YouTube",
+        "url": "#",
+        "style": "default"
+      }
     ]
   },
   "divisions": {
@@ -23,7 +35,7 @@
         "image": "images/generated/div_aerospace.jpg",
         "label": "Aerospace Command",
         "title": "Fleet Operations",
-        "text": "Javelins. Krakens. Idris frigates in formation. We don't ask for orbital superiority — we take it. Capital ship fleet ops, escort coordination, and force projection across every system that matters."
+        "text": "Javelins. Krakens. Idris frigates in formation. We don't ask for orbital superiority â we take it. Capital ship fleet ops, escort coordination, and force projection across every system that matters."
       },
       {
         "image": "images/generated/div_tech.jpg",
@@ -33,9 +45,9 @@
       },
       {
         "image": "images/generated/div_pmc.jpg",
-        "label": "FOG — Forward Operations Group",
+        "label": "FOG â Forward Operations Group",
         "title": "Private Military Contracting",
-        "text": "Ship boarding. Infiltration. High-value target extraction. FOG doesn't do peacekeeping — we do results. Elite, membership-limited, and available for hire."
+        "text": "Ship boarding. Infiltration. High-value target extraction. FOG doesn't do peacekeeping â we do results. Elite, membership-limited, and available for hire."
       }
     ]
   },
@@ -45,7 +57,7 @@
     "memberLabel": "// Active Personnel",
     "memberSub": "Operators and Counting",
     "quote": "\"Observe. Decide. Execute.\"",
-    "quoteAttr": "— MSTAR Doctrine"
+    "quoteAttr": "â MSTAR Doctrine"
   },
   "opsCalendar": {
     "sectionLabel": "// Weekly Operations Schedule",
@@ -55,15 +67,30 @@
         "name": "Monday",
         "date": "24 MAR",
         "events": [
-          { "time": "1900 UTC", "title": "FOG Qualification", "desc": "CQB drills & boarding procedures. Full kit required.", "type": "training" }
+          {
+            "time": "1900 UTC",
+            "title": "FOG Qualification",
+            "desc": "CQB drills & boarding procedures. Full kit required.",
+            "type": "training"
+          }
         ]
       },
       {
         "name": "Tuesday",
         "date": "25 MAR",
         "events": [
-          { "time": "2000 UTC", "title": "Supply Run", "desc": "Stanton logistics convoy. Haulers & escorts needed.", "type": "logistics" },
-          { "time": "2200 UTC", "title": "Org Night", "desc": "Open comms. Crew up, hang out, run whatever.", "type": "social" }
+          {
+            "time": "2000 UTC",
+            "title": "Supply Run",
+            "desc": "Stanton logistics convoy. Haulers & escorts needed.",
+            "type": "logistics"
+          },
+          {
+            "time": "2200 UTC",
+            "title": "Org Night",
+            "desc": "Open comms. Crew up, hang out, run whatever.",
+            "type": "social"
+          }
         ]
       },
       {
@@ -75,15 +102,30 @@
         "name": "Thursday",
         "date": "27 MAR",
         "events": [
-          { "time": "2000 UTC", "title": "Fleet Op: Siege", "desc": "Capital fleet engagement. All hands on deck.", "type": "combat" }
+          {
+            "time": "2000 UTC",
+            "title": "Fleet Op: Siege",
+            "desc": "Capital fleet engagement. All hands on deck.",
+            "type": "combat"
+          }
         ]
       },
       {
         "name": "Friday",
         "date": "28 MAR",
         "events": [
-          { "time": "1900 UTC", "title": "Bounty Board", "desc": "Contractor bounty runs. PvP & PvE targets.", "type": "combat" },
-          { "time": "2200 UTC", "title": "Friday Debrief", "desc": "Week recap & next week planning on Discord.", "type": "social" }
+          {
+            "time": "1900 UTC",
+            "title": "Bounty Board",
+            "desc": "Contractor bounty runs. PvP & PvE targets.",
+            "type": "combat"
+          },
+          {
+            "time": "2200 UTC",
+            "title": "Friday Debrief",
+            "desc": "Week recap & next week planning on Discord.",
+            "type": "social"
+          }
         ]
       }
     ]
@@ -91,6 +133,6 @@
   "footer": {
     "logoText": "Morningstar",
     "logoAccent": "Dynamics",
-    "sub": "Advanced Aerospace & Defense Systems — Est. 2950"
+    "sub": "Advanced Aerospace & Defense Systems â Est. 2950                                                                     Designed by Anarchy"
   }
 }
