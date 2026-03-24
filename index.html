@@ -147,6 +147,14 @@
             color: var(--blue);
         }
 
+        .nav-tagline {
+            font-family: 'PcapTerminal', monospace;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
         .nav-links {
             display: flex;
             gap: 2rem;
@@ -235,11 +243,11 @@
         }
 
         .hero-logo {
-            width: clamp(150px, 25vw, 280px);
+            width: clamp(120px, 20vw, 220px);
             height: auto;
             margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 25px var(--blue)) drop-shadow(0 0 60px var(--blue-glow));
-            animation: fadeUp 1s ease 0.2s forwards, holoPulse 4s ease-in-out 1.2s infinite;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.5)) drop-shadow(0 0 50px rgba(255,255,255,0.2));
+            animation: fadeUp 1s ease 0.2s forwards, logoPulse 4s ease-in-out 1.2s infinite;
             opacity: 0;
         }
 
@@ -249,22 +257,19 @@
             color: var(--orange);
             letter-spacing: 0.3em;
             text-transform: uppercase;
-            margin-bottom: 1.5rem;
+            margin-top: 2rem;
             opacity: 0;
-            animation: fadeUp 1s ease 0.3s forwards;
+            animation: fadeUp 1s ease 1.3s forwards;
         }
 
-        .hero-title {
-            font-family: 'Atures', sans-serif;
-            font-size: clamp(2.5rem, 7vw, 5.5rem);
-            color: var(--white);
-            line-height: 1.15;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
+        .hero-wordmark {
+            width: clamp(300px, 50vw, 600px);
+            height: auto;
+            margin-top: 1.5rem;
+            margin-bottom: 2.5rem;
+            filter: drop-shadow(0 0 20px var(--blue-glow)) drop-shadow(0 0 50px rgba(26, 159, 255, 0.15));
             opacity: 0;
             animation: fadeUp 1s ease 0.5s forwards;
-            text-shadow: 0 0 60px rgba(26, 159, 255, 0.2), 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .hero-subtitle {
@@ -292,7 +297,7 @@
         .hero-divider {
             width: 80px;
             height: 2px;
-            margin: 0 auto 2.5rem;
+            margin: 0 auto 1.5rem;
             background: linear-gradient(90deg, var(--blue), var(--orange));
             opacity: 0;
             animation: fadeUp 1s ease 1s forwards;
@@ -305,6 +310,11 @@
             flex-wrap: wrap;
             opacity: 0;
             animation: fadeUp 1s ease 1.1s forwards;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.3)) drop-shadow(0 0 40px rgba(255,255,255,0.1)); opacity: 0.9; }
+            50% { filter: drop-shadow(0 0 25px rgba(255,255,255,0.6)) drop-shadow(0 0 60px rgba(255,255,255,0.25)); opacity: 1; }
         }
 
         @keyframes fadeUp {
@@ -531,7 +541,7 @@
         .fleet-banner-bg {
             position: absolute;
             inset: -20%;
-            background: url('images/generated/fleet_orbit.png') center center / cover no-repeat;
+            background: url('images/generated/fog_banner.png') center center / cover no-repeat;
             filter: brightness(0.45) contrast(1.15);
         }
 
@@ -880,6 +890,7 @@
            ============================================================ */
         @media (max-width: 768px) {
             .nav-links { display: none; }
+            .nav-tagline { display: none; }
             .hero-cta { flex-direction: column; align-items: center; }
             .btn { width: 100%; max-width: 300px; justify-content: center; }
             .division-grid { grid-template-columns: 1fr; }
@@ -892,7 +903,7 @@
          NAV
          ============================================================ -->
     <nav class="nav" id="nav">
-        <a href="#" class="nav-logo">Morningstar <span>Dynamics</span></a>
+        <a href="#" class="nav-logo">Morningstar <span>Dynamics</span> <span class="nav-tagline">— Sword of Humanity</span></a>
         <ul class="nav-links">
             <li><a href="#divisions">Divisions</a></li>
             <li><a href="#ops-calendar">Operations</a></li>
@@ -909,10 +920,8 @@
         </video>
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <img src="images/logo.png" alt="Morningstar Dynamics" class="hero-logo">
-            <div class="hero-classification">// Dominance Is Engineered</div>
-            <h1 class="hero-title">Morningstar Dynamics</h1>
-            <p class="hero-subtitle">Sword of Humanity</p>
+            <img src="images/mstar_logo.png" alt="Morningstar Dynamics" class="hero-logo">
+            <img src="images/mstar_wordmark.png" alt="Morningstar Dynamics" class="hero-wordmark">
             <div class="hero-divider"></div>
             <p class="hero-tagline">
                 Advanced aerospace systems. Battlefield technologies.
@@ -933,6 +942,7 @@
                     YouTube
                 </a>
             </div>
+            <div class="hero-classification">// Dominance Is Engineered</div>
         </div>
     </section>
 
@@ -1122,6 +1132,147 @@
          JS — Nav scroll, parallax
          ============================================================ -->
     <script>
+        // ============================================================
+        // CONTENT LOADER — populates from content.json
+        // ============================================================
+        (async function loadContent() {
+            try {
+                const resp = await fetch('content.json');
+                if (!resp.ok) return;
+                const c = await resp.json();
+
+                // Nav
+                if (c.nav) {
+                    const navLogo = document.querySelector('.nav-logo');
+                    if (navLogo) navLogo.innerHTML = `${c.nav.logoText} <span>${c.nav.logoAccent}</span> <span class="nav-tagline">— ${c.nav.tagline}</span>`;
+                }
+
+                // Hero
+                if (c.hero) {
+                    const logo = document.querySelector('.hero-logo');
+                    const wordmark = document.querySelector('.hero-wordmark');
+                    const tagline = document.querySelector('.hero-tagline');
+                    const classification = document.querySelector('.hero-classification');
+                    if (logo) logo.src = c.hero.logoImage;
+                    if (wordmark) wordmark.src = c.hero.wordmarkImage;
+                    if (tagline) tagline.textContent = c.hero.tagline;
+                    if (classification) classification.textContent = c.hero.classification;
+
+                    // Buttons
+                    if (c.hero.buttons) {
+                        const cta = document.querySelector('.hero-cta');
+                        if (cta) {
+                            const svgs = {};
+                            cta.querySelectorAll('a').forEach(a => {
+                                const svg = a.querySelector('svg');
+                                const text = a.textContent.trim();
+                                if (svg) svgs[text] = svg.outerHTML;
+                            });
+                            cta.innerHTML = c.hero.buttons.map(btn => {
+                                const icon = Object.entries(svgs).find(([k]) => k.toLowerCase().includes(btn.text.toLowerCase().split(' ')[0]));
+                                return `<a href="${btn.url}" target="_blank" rel="noopener" class="btn ${btn.style === 'primary' ? 'btn-primary' : ''}">${icon ? icon[1] : ''} ${btn.text}</a>`;
+                            }).join('');
+                        }
+                    }
+                }
+
+                // Divisions
+                if (c.divisions) {
+                    const divLabel = document.querySelector('.divisions .section-label');
+                    const divTitle = document.querySelector('.divisions .section-title');
+                    if (divLabel) divLabel.textContent = c.divisions.sectionLabel;
+                    if (divTitle) divTitle.textContent = c.divisions.sectionTitle;
+
+                    const grid = document.querySelector('.division-grid');
+                    if (grid && c.divisions.cards) {
+                        grid.innerHTML = c.divisions.cards.map(card => `
+                            <div class="division-card">
+                                <img class="division-card-image" src="${card.image}" alt="${card.title}">
+                                <div class="division-card-body">
+                                    <div class="division-card-label">${card.label}</div>
+                                    <h3 class="division-card-title">${card.title}</h3>
+                                    <p class="division-card-text">${card.text}</p>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+
+                // Banner
+                if (c.banner) {
+                    const bg = document.getElementById('parallax-bg');
+                    if (bg) bg.style.backgroundImage = `url('${c.banner.backgroundImage}')`;
+                    const count = document.getElementById('member-count');
+                    if (count) count.dataset.target = c.banner.memberCount;
+                    const mLabel = document.querySelector('.member-counter-label');
+                    if (mLabel) mLabel.textContent = c.banner.memberLabel;
+                    const mSub = document.querySelector('.member-counter-sub');
+                    if (mSub) mSub.textContent = c.banner.memberSub;
+                    const quote = document.querySelector('.fleet-banner-quote');
+                    if (quote) quote.innerHTML = c.banner.quote;
+                    const attr = document.querySelector('.fleet-banner-attr');
+                    if (attr) attr.textContent = c.banner.quoteAttr;
+                }
+
+                // Ops Calendar
+                if (c.opsCalendar) {
+                    const calLabel = document.querySelector('.ops-calendar .section-label');
+                    const calTitle = document.querySelector('.ops-calendar .section-title');
+                    if (calLabel) calLabel.textContent = c.opsCalendar.sectionLabel;
+                    if (calTitle) calTitle.textContent = c.opsCalendar.sectionTitle;
+
+                    const opsGrid = document.querySelector('.ops-grid');
+                    if (opsGrid && c.opsCalendar.days) {
+                        opsGrid.innerHTML = c.opsCalendar.days.map(day => `
+                            <div class="ops-day">
+                                <div class="ops-day-header">
+                                    <span class="ops-day-name">${day.name}</span>
+                                    <span class="ops-day-date">${day.date}</span>
+                                </div>
+                                ${day.events.length === 0
+                                    ? '<div class="ops-day-empty"><span>— Stand Down —</span></div>'
+                                    : day.events.map(ev => `
+                                        <div class="ops-event event-${ev.type}">
+                                            <div class="ops-event-time">${ev.time}</div>
+                                            <div class="ops-event-title">${ev.title}</div>
+                                            <div class="ops-event-desc">${ev.desc}</div>
+                                        </div>
+                                    `).join('')}
+                            </div>
+                        `).join('');
+                    }
+                }
+
+                // Footer
+                if (c.footer) {
+                    const fLogo = document.querySelector('.footer-logo');
+                    if (fLogo) fLogo.innerHTML = `${c.footer.logoText} <span>${c.footer.logoAccent}</span>`;
+                    const fSub = document.querySelector('.footer-sub');
+                    if (fSub) fSub.textContent = c.footer.sub;
+                }
+
+                // Re-apply scroll animations to dynamically loaded elements
+                const obs = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.division-card, .ops-day').forEach(el => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(30px)';
+                    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    obs.observe(el);
+                });
+
+            } catch (e) {
+                // content.json failed — site works fine with hardcoded HTML
+                console.log('Content loader: using hardcoded fallback');
+            }
+        })();
+
         // Video background — hide poster when playing
         const heroVideo = document.getElementById('hero-video');
         const heroSection = document.getElementById('hero');

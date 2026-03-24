@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSTAR Admin — Content Editor</title>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0c10;
+            --panel: #0d1117;
+            --border: #1c2333;
+            --text: #c9d1d9;
+            --dim: #6e7681;
+            --blue: #1a9fff;
+            --orange: #e8872a;
+            --white: #f0f6fc;
+            --green: #40e870;
+            --red: #e84040;
+        }
+        body {
+            font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .admin-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel);
+        }
+        .admin-title {
+            font-size: 1.1rem;
+            color: var(--white);
+            letter-spacing: 0.05em;
+        }
+        .admin-title span { color: var(--blue); }
+        .admin-status {
+            font-size: 0.8rem;
+            color: var(--dim);
+        }
+        .admin-status.connected { color: var(--green); }
+        .admin-status.error { color: var(--red); }
+        .admin-body {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .auth-section {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .auth-section p {
+            margin-bottom: 1.5rem;
+            color: var(--dim);
+        }
+        .section {
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .section-body { padding: 1.5rem; }
+        .field {
+            margin-bottom: 1.25rem;
+        }
+        .field:last-child { margin-bottom: 0; }
+        .field label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.4rem;
+        }
+        .field input, .field textarea, .field select {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 0.9rem;
+            font-family: inherit;
+            border-radius: 4px;
+            transition: border-color 0.2s;
+        }
+        .field input:focus, .field textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+        .field textarea { min-height: 80px; resize: vertical; }
+        .card-group {
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(26, 159, 255, 0.02);
+        }
+        .card-group-title {
+            font-size: 0.7rem;
+            color: var(--blue);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+        .event-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 1fr 100px;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            align-items: end;
+        }
+        .event-row input, .event-row select {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.8rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.7rem 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            color: var(--text);
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            border-color: var(--blue);
+            color: var(--white);
+        }
+        .btn-primary {
+            background: var(--blue);
+            border-color: var(--blue);
+            color: var(--white);
+        }
+        .btn-primary:hover {
+            background: #1588dd;
+        }
+        .btn-sm {
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+        }
+        .btn-danger {
+            border-color: var(--red);
+            color: var(--red);
+        }
+        .btn-danger:hover {
+            background: var(--red);
+            color: var(--white);
+        }
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--green);
+            color: var(--bg);
+            font-weight: 600;
+            border-radius: 4px;
+            display: none;
+            z-index: 9999;
+        }
+        .toast.error { background: var(--red); color: var(--white); }
+        .day-group { margin-bottom: 1.5rem; }
+        .day-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .day-group-title {
+            font-size: 0.8rem;
+            color: var(--white);
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .event-row { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="admin-title">MSTAR <span>Admin</span></div>
+        <div class="admin-status" id="status">Not connected</div>
+    </header>
+
+    <div class="admin-body">
+        <!-- Auth -->
+        <div class="auth-section" id="auth-section">
+            <p>Enter a GitHub Personal Access Token with repo access to edit content.</p>
+            <div class="field" style="max-width:500px;margin:0 auto 1rem">
+                <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx">
+            </div>
+            <button class="btn btn-primary" onclick="authenticate()">Connect</button>
+        </div>
+
+        <!-- Editor (hidden until auth) -->
+        <div id="editor" style="display:none">
+
+            <!-- HERO -->
+            <div class="section">
+                <div class="section-header">Hero Section</div>
+                <div class="section-body">
+                    <div class="field">
+                        <label>Tagline</label>
+                        <textarea id="hero-tagline"></textarea>
+                    </div>
+                    <div class="field">
+                        <label>Classification Line</label>
+                        <input type="text" id="hero-classification">
+                    </div>
+                    <div class="field">
+                        <label>Logo Image Path</label>
+                        <input type="text" id="hero-logo">
+                    </div>
+                    <div class="field">
+                        <label>Wordmark Image Path</label>
+                        <input type="text" id="hero-wordmark">
+                    </div>
+                    <div id="hero-buttons"></div>
+                </div>
+            </div>
+
+            <!-- NAV -->
+            <div class="section">
+                <div class="section-header">Navigation</div>
+                <div class="section-body">
+                    <div class="field">
+                        <label>Logo Text</label>
+                        <input type="text" id="nav-logoText">
+                    </div>
+                    <div class="field">
+                        <label>Logo Accent (colored word)</label>
+                        <input type="text" id="nav-logoAccent">
+                    </div>
+                    <div class="field">
+                        <label>Tagline</label>
+                        <input type="text" id="nav-tagline">
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIVISIONS -->
+            <div class="section">
+                <div class="section-header">Divisions</div>
+                <div class="section-body">
+                    <div class="field">
+                        <label>Section Label</label>
+                        <input type="text" id="div-sectionLabel">
+                    </div>
+                    <div class="field">
+                        <label>Section Title</label>
+                        <input type="text" id="div-sectionTitle">
+                    </div>
+                    <div id="division-cards"></div>
+                </div>
+            </div>
+
+            <!-- BANNER -->
+            <div class="section">
+                <div class="section-header">Fleet Banner / Member Counter</div>
+                <div class="section-body">
+                    <div class="field">
+                        <label>Background Image</label>
+                        <input type="text" id="banner-bg">
+                    </div>
+                    <div class="field">
+                        <label>Member Count</label>
+                        <input type="number" id="banner-memberCount">
+                    </div>
+                    <div class="field">
+                        <label>Member Label</label>
+                        <input type="text" id="banner-memberLabel">
+                    </div>
+                    <div class="field">
+                        <label>Member Subtitle</label>
+                        <input type="text" id="banner-memberSub">
+                    </div>
+                    <div class="field">
+                        <label>Quote</label>
+                        <input type="text" id="banner-quote">
+                    </div>
+                    <div class="field">
+                        <label>Quote Attribution</label>
+                        <input type="text" id="banner-quoteAttr">
+                    </div>
+                </div>
+            </div>
+
+            <!-- OPS CALENDAR -->
+            <div class="section">
+                <div class="section-header">Operations Calendar</div>
+                <div class="section-body">
+                    <div class="field">
+                        <label>Section Label</label>
+                        <input type="text" id="cal-sectionLabel">
+                    </div>
+                    <div class="field">
+                        <label>Section Title</label>
+                        <input type="text" id="cal-sectionTitle">
+                    </div>
+                    <div id="calendar-days"></div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="section">
+                <div class="section-header">Footer</div>
+                <div class="section-body">
+                    <div class="field">
+                        <label>Subtitle</label>
+                        <input type="text" id="footer-sub">
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn" onclick="loadContent()">Reload</button>
+                <button class="btn btn-primary" onclick="saveContent()">Save & Publish</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const REPO = 'AnarchySC/morningstar-dynamics';
+        const FILE_PATH = 'content.json';
+        let token = '';
+        let currentSha = '';
+        let content = {};
+
+        function toast(msg, isError) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.className = 'toast' + (isError ? ' error' : '');
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 3000);
+        }
+
+        async function ghApi(path, opts = {}) {
+            const resp = await fetch(`https://api.github.com${path}`, {
+                ...opts,
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    ...(opts.headers || {})
+                }
+            });
+            if (!resp.ok) throw new Error(`GitHub API: ${resp.status}`);
+            return resp.json();
+        }
+
+        async function authenticate() {
+            token = document.getElementById('gh-token').value.trim();
+            if (!token) return;
+            try {
+                const user = await ghApi('/user');
+                document.getElementById('status').textContent = `Connected as ${user.login}`;
+                document.getElementById('status').className = 'admin-status connected';
+                document.getElementById('auth-section').style.display = 'none';
+                document.getElementById('editor').style.display = 'block';
+                localStorage.setItem('mstar_token', token);
+                await loadContent();
+            } catch (e) {
+                toast('Authentication failed — check your token', true);
+            }
+        }
+
+        async function loadContent() {
+            try {
+                const file = await ghApi(`/repos/${REPO}/contents/${FILE_PATH}`);
+                currentSha = file.sha;
+                content = JSON.parse(atob(file.content));
+                populateForm();
+                toast('Content loaded');
+            } catch (e) {
+                toast('Failed to load content', true);
+            }
+        }
+
+        function populateForm() {
+            const c = content;
+
+            // Nav
+            document.getElementById('nav-logoText').value = c.nav?.logoText || '';
+            document.getElementById('nav-logoAccent').value = c.nav?.logoAccent || '';
+            document.getElementById('nav-tagline').value = c.nav?.tagline || '';
+
+            // Hero
+            document.getElementById('hero-tagline').value = c.hero?.tagline || '';
+            document.getElementById('hero-classification').value = c.hero?.classification || '';
+            document.getElementById('hero-logo').value = c.hero?.logoImage || '';
+            document.getElementById('hero-wordmark').value = c.hero?.wordmarkImage || '';
+
+            // Hero buttons
+            const btnContainer = document.getElementById('hero-buttons');
+            btnContainer.innerHTML = (c.hero?.buttons || []).map((btn, i) => `
+                <div class="card-group">
+                    <div class="card-group-title">Button ${i + 1}</div>
+                    <div class="field"><label>Text</label><input type="text" data-btn="${i}" data-field="text" value="${btn.text}"></div>
+                    <div class="field"><label>URL</label><input type="text" data-btn="${i}" data-field="url" value="${btn.url}"></div>
+                </div>
+            `).join('');
+
+            // Divisions
+            document.getElementById('div-sectionLabel').value = c.divisions?.sectionLabel || '';
+            document.getElementById('div-sectionTitle').value = c.divisions?.sectionTitle || '';
+            const cardContainer = document.getElementById('division-cards');
+            cardContainer.innerHTML = (c.divisions?.cards || []).map((card, i) => `
+                <div class="card-group">
+                    <div class="card-group-title">Card ${i + 1}: ${card.title}</div>
+                    <div class="field"><label>Image Path</label><input type="text" data-card="${i}" data-field="image" value="${card.image}"></div>
+                    <div class="field"><label>Label</label><input type="text" data-card="${i}" data-field="label" value="${card.label}"></div>
+                    <div class="field"><label>Title</label><input type="text" data-card="${i}" data-field="title" value="${card.title}"></div>
+                    <div class="field"><label>Description</label><textarea data-card="${i}" data-field="text">${card.text}</textarea></div>
+                </div>
+            `).join('');
+
+            // Banner
+            document.getElementById('banner-bg').value = c.banner?.backgroundImage || '';
+            document.getElementById('banner-memberCount').value = c.banner?.memberCount || 0;
+            document.getElementById('banner-memberLabel').value = c.banner?.memberLabel || '';
+            document.getElementById('banner-memberSub').value = c.banner?.memberSub || '';
+            document.getElementById('banner-quote').value = c.banner?.quote || '';
+            document.getElementById('banner-quoteAttr').value = c.banner?.quoteAttr || '';
+
+            // Calendar
+            document.getElementById('cal-sectionLabel').value = c.opsCalendar?.sectionLabel || '';
+            document.getElementById('cal-sectionTitle').value = c.opsCalendar?.sectionTitle || '';
+            const daysContainer = document.getElementById('calendar-days');
+            daysContainer.innerHTML = (c.opsCalendar?.days || []).map((day, di) => `
+                <div class="day-group">
+                    <div class="day-group-header">
+                        <span class="day-group-title">${day.name}</span>
+                        <button class="btn btn-sm" onclick="addEvent(${di})">+ Event</button>
+                    </div>
+                    <div class="field"><label>Date Display</label><input type="text" data-day="${di}" data-field="date" value="${day.date}"></div>
+                    <div id="day-${di}-events">
+                        ${day.events.map((ev, ei) => eventRow(di, ei, ev)).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // Footer
+            document.getElementById('footer-sub').value = c.footer?.sub || '';
+        }
+
+        function eventRow(di, ei, ev) {
+            return `<div class="event-row">
+                <input type="text" data-day="${di}" data-ev="${ei}" data-field="time" value="${ev.time}" placeholder="1900 UTC">
+                <input type="text" data-day="${di}" data-ev="${ei}" data-field="title" value="${ev.title}" placeholder="Event title">
+                <input type="text" data-day="${di}" data-ev="${ei}" data-field="desc" value="${ev.desc}" placeholder="Description">
+                <select data-day="${di}" data-ev="${ei}" data-field="type">
+                    <option value="combat" ${ev.type==='combat'?'selected':''}>Combat</option>
+                    <option value="logistics" ${ev.type==='logistics'?'selected':''}>Logistics</option>
+                    <option value="training" ${ev.type==='training'?'selected':''}>Training</option>
+                    <option value="social" ${ev.type==='social'?'selected':''}>Social</option>
+                </select>
+            </div>`;
+        }
+
+        function addEvent(dayIndex) {
+            content.opsCalendar.days[dayIndex].events.push({
+                time: '2000 UTC', title: 'New Event', desc: '', type: 'combat'
+            });
+            populateForm();
+        }
+
+        function collectForm() {
+            const c = content;
+
+            c.nav.logoText = document.getElementById('nav-logoText').value;
+            c.nav.logoAccent = document.getElementById('nav-logoAccent').value;
+            c.nav.tagline = document.getElementById('nav-tagline').value;
+
+            c.hero.tagline = document.getElementById('hero-tagline').value;
+            c.hero.classification = document.getElementById('hero-classification').value;
+            c.hero.logoImage = document.getElementById('hero-logo').value;
+            c.hero.wordmarkImage = document.getElementById('hero-wordmark').value;
+
+            document.querySelectorAll('[data-btn]').forEach(el => {
+                const i = parseInt(el.dataset.btn);
+                c.hero.buttons[i][el.dataset.field] = el.value;
+            });
+
+            c.divisions.sectionLabel = document.getElementById('div-sectionLabel').value;
+            c.divisions.sectionTitle = document.getElementById('div-sectionTitle').value;
+            document.querySelectorAll('[data-card]').forEach(el => {
+                const i = parseInt(el.dataset.card);
+                c.divisions.cards[i][el.dataset.field] = el.value;
+            });
+
+            c.banner.backgroundImage = document.getElementById('banner-bg').value;
+            c.banner.memberCount = parseInt(document.getElementById('banner-memberCount').value);
+            c.banner.memberLabel = document.getElementById('banner-memberLabel').value;
+            c.banner.memberSub = document.getElementById('banner-memberSub').value;
+            c.banner.quote = document.getElementById('banner-quote').value;
+            c.banner.quoteAttr = document.getElementById('banner-quoteAttr').value;
+
+            c.opsCalendar.sectionLabel = document.getElementById('cal-sectionLabel').value;
+            c.opsCalendar.sectionTitle = document.getElementById('cal-sectionTitle').value;
+
+            // Collect calendar events
+            c.opsCalendar.days.forEach((day, di) => {
+                document.getElementById(`day-${di}-events`).querySelectorAll('[data-field="date"]');
+                day.date = document.querySelector(`[data-day="${di}"][data-field="date"]`)?.value || day.date;
+                day.events = [];
+            });
+            document.querySelectorAll('[data-ev]').forEach(el => {
+                const di = parseInt(el.dataset.day);
+                const ei = parseInt(el.dataset.ev);
+                if (!c.opsCalendar.days[di].events[ei]) {
+                    c.opsCalendar.days[di].events[ei] = {};
+                }
+                c.opsCalendar.days[di].events[ei][el.dataset.field] = el.value;
+            });
+
+            c.footer.sub = document.getElementById('footer-sub').value;
+
+            return c;
+        }
+
+        async function saveContent() {
+            try {
+                const data = collectForm();
+                const jsonStr = JSON.stringify(data, null, 2) + '\n';
+                const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+
+                await ghApi(`/repos/${REPO}/contents/${FILE_PATH}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        message: 'Update site content via admin panel',
+                        content: encoded,
+                        sha: currentSha
+                    })
+                });
+
+                toast('Saved & published! Changes go live in ~1 min.');
+                await loadContent(); // refresh sha
+            } catch (e) {
+                toast('Save failed: ' + e.message, true);
+            }
+        }
+
+        // Auto-login from stored token
+        const stored = localStorage.getItem('mstar_token');
+        if (stored) {
+            document.getElementById('gh-token').value = stored;
+            authenticate();
+        }
+    </script>
+</body>
+</html>
