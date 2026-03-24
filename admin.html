@@ -396,7 +396,7 @@
             try {
                 const file = await ghApi(`/repos/${REPO}/contents/${FILE_PATH}`);
                 currentSha = file.sha;
-                content = JSON.parse(atob(file.content));
+                content = JSON.parse(decodeURIComponent(escape(atob(file.content))));
                 populateForm();
                 toast('Content loaded');
             } catch (e) {
