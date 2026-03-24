@@ -198,6 +198,32 @@
             color: var(--white);
             font-weight: 600;
         }
+        .upload-field {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .upload-field input[type="text"] {
+            flex: 1;
+            background: var(--bg);
+            color: var(--dim);
+        }
+        .upload-field input[type="file"] {
+            display: none;
+        }
+        .upload-preview {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            background: var(--bg);
+        }
+        .upload-progress {
+            font-size: 0.7rem;
+            color: var(--blue);
+            margin-top: 0.3rem;
+        }
         @media (max-width: 768px) {
             .event-row { grid-template-columns: 1fr 1fr; }
         }
@@ -254,12 +280,22 @@
                         <input type="text" id="hero-classification">
                     </div>
                     <div class="field">
-                        <label>Logo Image Path</label>
-                        <input type="text" id="hero-logo">
+                        <label>Logo Image</label>
+                        <div class="upload-field">
+                            <img class="upload-preview" id="hero-logo-preview" src="">
+                            <input type="text" id="hero-logo" readonly>
+                            <input type="file" accept="image/*" onchange="uploadImage(this, 'hero-logo', 'images/')">
+                            <button class="btn btn-sm" onclick="this.previousElementSibling.click()">Upload</button>
+                        </div>
                     </div>
                     <div class="field">
-                        <label>Wordmark Image Path</label>
-                        <input type="text" id="hero-wordmark">
+                        <label>Wordmark Image</label>
+                        <div class="upload-field">
+                            <img class="upload-preview" id="hero-wordmark-preview" src="">
+                            <input type="text" id="hero-wordmark" readonly>
+                            <input type="file" accept="image/*" onchange="uploadImage(this, 'hero-wordmark', 'images/')">
+                            <button class="btn btn-sm" onclick="this.previousElementSibling.click()">Upload</button>
+                        </div>
                     </div>
                     <div id="hero-buttons"></div>
                 </div>
@@ -287,7 +323,12 @@
                 <div class="section-body">
                     <div class="field">
                         <label>Background Image</label>
-                        <input type="text" id="banner-bg">
+                        <div class="upload-field">
+                            <img class="upload-preview" id="banner-bg-preview" src="">
+                            <input type="text" id="banner-bg" readonly>
+                            <input type="file" accept="image/*" onchange="uploadImage(this, 'banner-bg', 'images/generated/')">
+                            <button class="btn btn-sm" onclick="this.previousElementSibling.click()">Upload</button>
+                        </div>
                     </div>
                     <div class="field">
                         <label>Member Count</label>
@@ -349,6 +390,48 @@
     <div class="toast" id="toast"></div>
 
     <script>
+        async function uploadImage(fileInput, targetId, folder) {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const name = file.name.toLowerCase().replace(/[^a-z0-9._-]/g, '_');
+            const path = folder + name;
+
+            toast('Uploading ' + name + '...');
+
+            const reader = new FileReader();
+            reader.onload = async function() {
+                const base64 = reader.result.split(',')[1];
+                try {
+                    // Check if file exists (need sha to overwrite)
+                    let sha = null;
+                    try {
+                        const existing = await ghApi(`/repos/${REPO}/contents/${path}`);
+                        sha = existing.sha;
+                    } catch (e) {}
+
+                    const body = {
+                        message: `Upload ${name} via admin panel`,
+                        content: base64
+                    };
+                    if (sha) body.sha = sha;
+
+                    await ghApi(`/repos/${REPO}/contents/${path}`, {
+                        method: 'PUT',
+                        body: JSON.stringify(body)
+                    });
+
+                    document.getElementById(targetId).value = path;
+                    const preview = document.getElementById(targetId + '-preview');
+                    if (preview) preview.src = URL.createObjectURL(file);
+                    toast('Uploaded ' + name);
+                } catch (e) {
+                    toast('Upload failed: ' + e.message, true);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
         const REPO = 'AnarchySC/morningstar-dynamics';
         const FILE_PATH = 'content.json';
         let token = '';
@@ -417,6 +500,10 @@
             document.getElementById('hero-classification').value = c.hero?.classification || '';
             document.getElementById('hero-logo').value = c.hero?.logoImage || '';
             document.getElementById('hero-wordmark').value = c.hero?.wordmarkImage || '';
+            const lp = document.getElementById('hero-logo-preview');
+            if (lp && c.hero?.logoImage) lp.src = c.hero.logoImage;
+            const wp = document.getElementById('hero-wordmark-preview');
+            if (wp && c.hero?.wordmarkImage) wp.src = c.hero.wordmarkImage;
 
             // Hero buttons
             const btnContainer = document.getElementById('hero-buttons');
@@ -435,7 +522,14 @@
             cardContainer.innerHTML = (c.divisions?.cards || []).map((card, i) => `
                 <div class="card-group">
                     <div class="card-group-title">Card ${i + 1}: ${card.title}</div>
-                    <div class="field"><label>Image Path</label><input type="text" data-card="${i}" data-field="image" value="${card.image}"></div>
+                    <div class="field"><label>Image</label>
+                        <div class="upload-field">
+                            <img class="upload-preview" id="card-${i}-image-preview" src="${card.image}">
+                            <input type="text" id="card-${i}-image" data-card="${i}" data-field="image" value="${card.image}" readonly>
+                            <input type="file" accept="image/*" onchange="uploadImage(this, 'card-${i}-image', 'images/generated/')">
+                            <button class="btn btn-sm" onclick="this.previousElementSibling.click()">Upload</button>
+                        </div>
+                    </div>
                     <div class="field"><label>Label</label><input type="text" data-card="${i}" data-field="label" value="${card.label}"></div>
                     <div class="field"><label>Title</label><input type="text" data-card="${i}" data-field="title" value="${card.title}"></div>
                     <div class="field"><label>Description</label><textarea data-card="${i}" data-field="text">${card.text}</textarea></div>
@@ -444,6 +538,8 @@
 
             // Banner
             document.getElementById('banner-bg').value = c.banner?.backgroundImage || '';
+            const bp = document.getElementById('banner-bg-preview');
+            if (bp && c.banner?.backgroundImage) bp.src = c.banner.backgroundImage;
             document.getElementById('banner-memberCount').value = c.banner?.memberCount || 0;
             document.getElementById('banner-memberLabel').value = c.banner?.memberLabel || '';
             document.getElementById('banner-memberSub').value = c.banner?.memberSub || '';
