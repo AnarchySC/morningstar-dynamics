@@ -35,7 +35,7 @@
         "image": "images/generated/div_aerospace.jpg",
         "label": "Aerospace Command",
         "title": "Fleet Operations",
-        "text": "Javelins. Krakens. Idris frigates in formation. We don't ask for orbital superiority ÃÂ¢ÃÂÃÂ we take it. Capital ship fleet ops, escort coordination, and force projection across every system that matters."
+        "text": "Javelins. Krakens. Idris frigates in formation. We don't ask for orbital superiority ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ we take it. Capital ship fleet ops, escort coordination, and force projection across every system that matters."
       },
       {
         "image": "images/generated/div_tech.jpg",
@@ -45,9 +45,9 @@
       },
       {
         "image": "images/generated/div_pmc.jpg",
-        "label": "FOG ÃÂ¢ÃÂÃÂ Forward Operations Group",
+        "label": "FOG ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ Forward Operations Group",
         "title": "Private Military Contracting",
-        "text": "Ship boarding. Infiltration. High-value target extraction. FOG doesn't do peacekeeping ÃÂ¢ÃÂÃÂ we do results. Elite, membership-limited, and available for hire."
+        "text": "Ship boarding. Infiltration. High-value target extraction. FOG doesn't do peacekeeping ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ we do results. Elite, membership-limited, and available for hire."
       }
     ]
   },
@@ -57,7 +57,7 @@
     "memberLabel": "// Active Personnel",
     "memberSub": "Operators and Counting",
     "quote": "\"Observe. Decide. Execute.\"",
-    "quoteAttr": "ÃÂ¢ÃÂÃÂ MSTAR Doctrine"
+    "quoteAttr": "ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ MSTAR Doctrine"
   },
   "opsCalendar": {
     "sectionLabel": "// Weekly Operations Schedule",
@@ -133,6 +133,6 @@
   "footer": {
     "logoText": "Morningstar",
     "logoAccent": "Dynamics",
-    "sub": "Advanced Aerospace & Defense Systems ÃÂ¢ÃÂÃÂ Est. 2950 -             Design by Anarchy"
+    "sub": "Advanced Aerospace & Defense Systems ÃÂÃÂ¢ÃÂÃÂÃÂÃÂ Est. 2950 | Design by Anarchy"
   }
 }
