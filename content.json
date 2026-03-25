@@ -116,15 +116,21 @@
         "events": [
           {
             "time": "1900 UTC",
-            "title": "Bounty Board",
-            "desc": "Contractor bounty runs. PvP & PvE targets.",
+            "title": "",
+            "desc": "",
             "type": "combat"
           },
           {
             "time": "2200 UTC",
-            "title": "Friday Debrief",
+            "title": "",
             "desc": "Week recap & next week planning on Discord.",
             "type": "social"
+          },
+          {
+            "time": "2000 UTC",
+            "title": "New Event",
+            "desc": "",
+            "type": "combat"
           }
         ]
       }
