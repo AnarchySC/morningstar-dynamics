@@ -32,19 +32,19 @@
     "sectionTitle": "Divisions",
     "cards": [
       {
-        "image": "images/generated/div_aerospace.jpg",
-        "label": "Aerospace Command",
+        "image": "images/generated/fleet-ops.png",
+        "label": "MORNINGSTAR DEFENSE",
         "title": "Fleet Operations",
         "text": "Javelins. Krakens. Idris frigates in formation. We don't ask for orbital superiority — we take it. Capital ship fleet ops, escort coordination, and force projection across every system that matters."
       },
       {
-        "image": "images/generated/div_tech.jpg",
+        "image": "images/generated/battlefield-tech.png",
         "label": "LOGISTICS",
-        "title": "Battlefield Technologies",
+        "title": "Advanced Battlefield Technologies",
         "text": "Blueprinted weapons. Custom loadouts. Gear that hasn't hit the market yet. Our Logistics dept makes sure every operator hits the field with an unfair advantage. Mining ,crafting, base building, salvage.. WE DO IT ALL!"
       },
       {
-        "image": "images/generated/div_pmc.jpg",
+        "image": "images/generated/fog.png",
         "label": "FOG — Forward Operations Group",
         "title": "Private Military Contracting",
         "text": "Ship boarding. Infiltration. High-value target extraction. FOG doesn't do peacekeeping — we do results. Elite, membership-limited, and available for hire."
@@ -112,7 +112,7 @@
       },
       {
         "name": "Friday",
-        "date": "28 MAR",
+        "date": "4/4/26",
         "events": [
           {
             "time": "1900 UTC",
@@ -130,6 +130,18 @@
             "time": "2000 UTC",
             "title": "New Event",
             "desc": "",
+            "type": "combat"
+          }
+        ]
+      },
+      {
+        "name": "Saturday",
+        "date": "4/5/26",
+        "events": [
+          {
+            "time": "19:00",
+            "title": "FLEET BATTLE TRAINING",
+            "desc": "IDRIS see CAYDEN FLTSBL",
             "type": "combat"
           }
         ]
