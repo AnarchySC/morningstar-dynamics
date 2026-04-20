@@ -17,7 +17,7 @@
       },
       {
         "text": "Join Discord",
-        "url": "https://discord.gg/nRgfnkgJ",
+        "url": "https://discord.gg/GkFajqYE",
         "style": "default"
       },
       {
@@ -112,36 +112,17 @@
       },
       {
         "name": "Friday",
-        "date": "4/4/26",
-        "events": [
-          {
-            "time": "1900 UTC",
-            "title": "",
-            "desc": "",
-            "type": "combat"
-          },
-          {
-            "time": "2200 UTC",
-            "title": "",
-            "desc": "Week recap & next week planning on Discord.",
-            "type": "social"
-          },
-          {
-            "time": "2000 UTC",
-            "title": "New Event",
-            "desc": "",
-            "type": "combat"
-          }
-        ]
+        "date": "4/24/26",
+        "events": []
       },
       {
         "name": "Saturday",
-        "date": "4/5/26",
+        "date": "4/25/26",
         "events": [
           {
-            "time": "19:00",
-            "title": "FLEET BATTLE TRAINING",
-            "desc": "IDRIS see CAYDEN FLTSBL",
+            "time": "2000 UTC",
+            "title": "OPERATION COBALT MRD",
+            "desc": "MEDICAL SAR SCRIM",
             "type": "combat"
           }
         ]
