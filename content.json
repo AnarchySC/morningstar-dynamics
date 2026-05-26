@@ -17,7 +17,7 @@
       },
       {
         "text": "Join Discord",
-        "url": "https://discord.gg/GkFajqYE",
+        "url": "https://discord.gg/MSTAR",
         "style": "default"
       },
       {
@@ -53,7 +53,7 @@
   },
   "banner": {
     "backgroundImage": "images/generated/fog_banner.png",
-    "memberCount": 394,
+    "memberCount": 398,
     "memberLabel": "// Active Personnel",
     "memberSub": "Operators and Counting",
     "quote": "\"Observe. Decide. Execute.\"",
@@ -65,7 +65,7 @@
     "days": [
       {
         "name": "Monday",
-        "date": "24 MAR",
+        "date": "MAY 25",
         "events": [
           {
             "time": "1900 UTC",
@@ -77,55 +77,33 @@
       },
       {
         "name": "Tuesday",
-        "date": "25 MAR",
-        "events": [
-          {
-            "time": "2000 UTC",
-            "title": "Supply Run",
-            "desc": "Stanton logistics convoy. Haulers & escorts needed.",
-            "type": "logistics"
-          },
-          {
-            "time": "2200 UTC",
-            "title": "Org Night",
-            "desc": "Open comms. Crew up, hang out, run whatever.",
-            "type": "social"
-          }
-        ]
+        "date": "MAY 26",
+        "events": []
       },
       {
         "name": "Wednesday",
-        "date": "26 MAR",
+        "date": "MAY 27",
         "events": []
       },
       {
         "name": "Thursday",
-        "date": "27 MAR",
-        "events": [
-          {
-            "time": "2000 UTC",
-            "title": "Fleet Op: Siege",
-            "desc": "Capital fleet engagement. All hands on deck.",
-            "type": "combat"
-          }
-        ]
+        "date": "MAY 28",
+        "events": []
       },
       {
         "name": "Friday",
-        "date": "4/24/26",
+        "date": "MAY 29",
         "events": []
       },
       {
         "name": "Saturday",
-        "date": "4/25/26",
-        "events": [
-          {
-            "time": "2000 UTC",
-            "title": "OPERATION COBALT MRD",
-            "desc": "MEDICAL SAR SCRIM",
-            "type": "combat"
-          }
-        ]
+        "date": "MAY 30",
+        "events": []
+      },
+      {
+        "name": "Sunday",
+        "date": "MAY 31",
+        "events": []
       }
     ]
   },
