@@ -53,7 +53,7 @@
   },
   "banner": {
     "backgroundImage": "images/generated/fog_banner.png",
-    "memberCount": 398,
+    "memberCount": 402,
     "memberLabel": "// Active Personnel",
     "memberSub": "Operators and Counting",
     "quote": "\"Observe. Decide. Execute.\"",
@@ -88,7 +88,14 @@
       {
         "name": "Thursday",
         "date": "MAY 28",
-        "events": []
+        "events": [
+          {
+            "time": "6:00 PM EST",
+            "title": "DOGFIGHT TRAINING",
+            "desc": "RANGE : AC",
+            "type": "combat"
+          }
+        ]
       },
       {
         "name": "Friday",
@@ -98,7 +105,14 @@
       {
         "name": "Saturday",
         "date": "MAY 30",
-        "events": []
+        "events": [
+          {
+            "time": "9:00 PM EST",
+            "title": "CAPITAL CARNAGE",
+            "desc": "",
+            "type": "combat"
+          }
+        ]
       },
       {
         "name": "Sunday",
